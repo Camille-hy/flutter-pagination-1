@@ -12,8 +12,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => BottomNavigationExample(),
         '/stack': (context) => StackNavigationExample(),
-        '/tab': (context) => TabNavigationExample(),
+        '/bottomtab': (context) => BottomTabNavigationExample(),
         '/drawer': (context) => DrawerNavigationExample(),
+        '/tab': (context) => TabNavigationExample(),
       },
     );
   }
@@ -29,8 +30,9 @@ class _BottomNavigationExampleState extends State<BottomNavigationExample> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
     StackNavigationExample(),
-    TabNavigationExample(),
+    BottomTabNavigationExample(),
     DrawerNavigationExample(),
+    TabNavigationExample(),
   ];
 
   @override
@@ -46,16 +48,32 @@ class _BottomNavigationExampleState extends State<BottomNavigationExample> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.layers),
+            icon: Icon(
+              Icons.layers,
+              color: Colors.black87,
+            ),
             label: 'Stack',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.tab),
-            label: 'Tab',
+            icon: Icon(
+              Icons.tab,
+              color: Colors.black87,
+            ),
+            label: 'Bottom Tab',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
+            icon: Icon(
+              Icons.menu,
+              color: Colors.black87,
+            ),
             label: 'Drawer',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.tab,
+              color: Colors.black87,
+            ),
+            label: 'Tab',
           ),
         ],
       ),
@@ -111,27 +129,51 @@ class SecondScreen extends StatelessWidget {
   }
 }
 
-class TabNavigationExample extends StatefulWidget {
+class BottomTabNavigationExample extends StatefulWidget {
   @override
-  _TabNavigationExampleState createState() => _TabNavigationExampleState();
+  _BottomTabNavigationExampleState createState() =>
+      _BottomTabNavigationExampleState();
 }
 
-class _TabNavigationExampleState extends State<TabNavigationExample> {
+class _BottomTabNavigationExampleState
+    extends State<BottomTabNavigationExample> {
   int _currentIndex = 0;
-
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tab'),
+        title: Text('Bottom Tab'),
       ),
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          FirstTab(),
+          Container(
+          child:Column(
+            children: [
+              FirstTab(),
+              SizedBox(
+                height: 20,
+              ),
+              Text('$_counter'),
+              SizedBox(
+                height: 20,
+              ),
+              FloatingActionButton(
+                onPressed: _incrementCounter,
+                child: const Icon(Icons.add),
+              ),
+            ],
+          )
+          ),
           SecondTab(),
           ThirdTab(),
-          ],
+        ],
       ),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
@@ -172,28 +214,12 @@ class FirstTab extends StatefulWidget {
 }
 
 class _FirstTabState extends State<FirstTab> {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: [
           Image.asset('assets/images/cat1.jpg'),
-          SizedBox(
-            height: 20,
-          ),
-          Text('$_counter'),
-          SizedBox(height: 20,),
-          FloatingActionButton(
-            onPressed: _incrementCounter,
-            child: const Icon(Icons.add),
-          ),
         ],
       ),
     );
@@ -242,6 +268,13 @@ class DrawerNavigationExample extends StatefulWidget {
 
 class _DrawerNavigationExampleState extends State<DrawerNavigationExample> {
   int _currentIndex = 0;
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -255,13 +288,29 @@ class _DrawerNavigationExampleState extends State<DrawerNavigationExample> {
       appBar: AppBar(
         title: Text('Drawer '),
       ),
-      body:  IndexedStack(
+      body: IndexedStack(
         index: _currentIndex,
         children: [
-          FirstTab(),
+          Container(
+          child:Column(
+            children: [
+              FirstTab(),
+              SizedBox(
+                height: 20,
+              ),
+              Text('$_counter'),
+              SizedBox(
+                height: 20,
+              ),
+              FloatingActionButton(
+                onPressed: _incrementCounter,
+                child: const Icon(Icons.add),
+              ),
+            ],
+          ),),
           SecondTab(),
           ThirdTab(),
-          ],
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -306,6 +355,85 @@ class _DrawerNavigationExampleState extends State<DrawerNavigationExample> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TabNavigationExample extends StatefulWidget {
+  const TabNavigationExample({super.key});
+
+  @override
+  State<TabNavigationExample> createState() => _TabNavigationExampleState();
+}
+
+class _TabNavigationExampleState extends State<TabNavigationExample>
+    with AutomaticKeepAliveClientMixin<TabNavigationExample> {
+  @override
+  bool get wantKeepAlive => true;
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('Tab'),
+          ),
+          body: Column(
+            children: [
+              TabBar(
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.home,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Tab(
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Tab(
+                    icon: Icon(
+                      Icons.help,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(children: [
+                  Container(
+                      child: Column(
+                    children: [
+                      FirstTab(),
+                      SizedBox(height: 20,),
+                      Text('$_counter'),
+                      SizedBox(height: 20,),
+                      FloatingActionButton(
+                        onPressed: _incrementCounter,
+                        child: const Icon(Icons.add),
+                      )
+                    ],
+                  )),
+                  Container(
+                    child: SecondTab(),
+                  ),
+                  Container(child: ThirdTab()),
+                ]),
+              )
+            ],
+          )),
     );
   }
 }
