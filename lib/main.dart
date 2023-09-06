@@ -242,11 +242,6 @@ class DrawerNavigationExample extends StatefulWidget {
 
 class _DrawerNavigationExampleState extends State<DrawerNavigationExample> {
   int _currentIndex = 0;
-  final List<Widget> _lists = [
-    FirstTab(),
-    SecondTab(),
-    ThirdTab(),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
