@@ -260,8 +260,13 @@ class _DrawerNavigationExampleState extends State<DrawerNavigationExample> {
       appBar: AppBar(
         title: Text('Drawer '),
       ),
-      body: Center(
-        child: _lists[_currentIndex],
+      body:  IndexedStack(
+        index: _currentIndex,
+        children: [
+          FirstTab(),
+          SecondTab(),
+          ThirdTab(),
+          ],
       ),
       drawer: Drawer(
         child: ListView(
