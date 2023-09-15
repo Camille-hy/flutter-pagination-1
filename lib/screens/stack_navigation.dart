@@ -24,7 +24,7 @@ class _StackNavigationExampleState extends State<StackNavigationExample>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Behaviour'),
+        title: Text('Stack'),
       ),
       body: Center(
         child: Column(
